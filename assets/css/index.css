@@ -213,13 +213,9 @@ nav .logo {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 50%;
+    height: 30%;
     text-align: left;
     cursor: pointer;
-}
-
-.content-box h1:hover {
-    height: 100%;
 }
 
 /* Sidebar Section */
@@ -301,4 +297,135 @@ nav .logo {
         font-size: 14px;
         padding: 8px;
     }
+}
+
+/* Base styles for all-posts */
+.all-posts {
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Muli, sans-serif;
+}
+
+.all-posts h1 {
+    background-color: var(--primary-color);
+}
+
+.all-posts h1:hover {
+    color: var(--background-color);
+    background-color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
+
+/* Styling for the list */
+#all-posts-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#all-posts-list li {
+    font-size: 1.2rem; 
+    line-height: 1.5;
+    margin-bottom: 10px; /* Space between items */
+    color: var(--text-color); /* Text color */
+    word-wrap: break-word; /* Ensures long words break on small screens */
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 600px) {
+    .all-posts {
+        padding: 10px; /* Reduce padding on smaller devices */
+    }
+
+    #all-posts-list li {
+        font-size: 1rem; /* Slightly smaller font on small screens */
+    }
+}
+
+
+
+#editor-home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100vh;
+    padding: 20px;
+    box-sizing: border-box;
+    background: -var(--background-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.editor-page-name {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.editor-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+}
+
+#editor-content-heading {
+    width: 90%;
+    height: 6vh;
+    padding: 10px;
+    border: 1px solid var(--headings-background-color-opaque);
+    border-radius: 5px;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: var(--primary-color);
+    color: var(--text-color);
+}
+
+#editor-content {
+    width: 90%;
+    height: 80vh;
+    padding: 10px;
+    border: 1px solid var(--headings-background-color-opaque);
+    border-radius: 5px;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: var(--primary-color);
+    color: var(--text-color);
+}
+
+#editor-content-save-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: var(--home-headings-color);
+    background-color: var(--headings-background-color-opaque);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#editor-content-save-btn:hover {
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+.editor-upload-image-btn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: var(--home-headings-color);
+    background-color: var(--headings-background-color-opaque);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.editor-upload-image-btn:hover {
+    color: var(--text-color);
+    background-color: var(--background-color);
 }

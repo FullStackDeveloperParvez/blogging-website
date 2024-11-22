@@ -21,7 +21,6 @@ menuToggleBtn.addEventListener('click', () => {
     menu.classList.toggle('active');
 });
 
-
 // Categories Dropdown
 document.addEventListener('DOMContentLoaded', () => {
     const categoriesButton = document.getElementById('categories-btn');
@@ -58,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
             listItem.textContent = folder;
 
             listItem.addEventListener('click', () => {
-                window.location.href = `assets/categories/${folder}/${folder}.html`;
+                window.location.href = `../${folder}/${folder}.html`;
             });
 
             dropdownList.appendChild(listItem);
@@ -95,89 +94,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-//Homepage Random posts section
-document.addEventListener('DOMContentLoaded', () => {
-    const mainContentBoxes = document.querySelectorAll('.content-box');
-
-    // Fetch filenames from the backend API
-    function fetchFilenames(callback) {
-        fetch('http://localhost:3000/api/categories/files')
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch filenames');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                callback(data);
-            })
-            .catch((error) => {
-                console.error(error);
-                callback([]);
-            });
-    }
-
-    // Display random filenames in the content boxes
-    function displayRandomFiles(filenames) {
-        // Select 4 random filenames
-        const randomFiles = filenames.sort(() => 0.5 - Math.random()).slice(0, 4);
-
-        mainContentBoxes.forEach((box, index) => {
-            if (randomFiles[index]) {
-                const fullPath = randomFiles[index];
-                const fileNameWithExtension = fullPath.split('/').pop();
-                const fileName = fileNameWithExtension.replace('.html', '');
-                const headingElement = box.querySelector('h1');
-                headingElement.textContent = fileName;
-
-                // Set the file path as a click event handler
-                box.addEventListener('click', () => {
-                    window.location.href = `assets/categories/${fullPath}`;
-                });
-            }
-        });
-    }
-
-    // Initialize
-    fetchFilenames((filenames) => {
-        if (filenames.length > 0) {
-            displayRandomFiles(filenames);
-        } else {
-            console.error('No files found in categories');
-        }
-    });
-});
-
-//Homepage Recent Posts List
+//Fetch all blogs of specific category
 document.addEventListener('DOMContentLoaded', function () {
-    const recentPostsList = document.getElementById('recent-posts-list');
-    const loadMoreButton = document.getElementById('load-more-button');
-
+    const allPostsList = document.getElementById('all-posts-list');
+    const folderName = document.title;
+    const url = `http://localhost:3000/get-html-file-names?folder=assets/categories/${folderName}`;
     // Fetch the list of file names from the API
-    fetch('http://localhost:3000/api/categories/files')
+    fetch(url)
         .then(response => response.json())
         .then(data => {
             // Limit the number of filenames to 15
-            const fileNames = data.slice(0, 15);
+            const fileNames = data;
             
             // Clear the current list
-            recentPostsList.innerHTML = '';
-
+            allPostsList.innerHTML = '';
             // Check if any filenames were returned
             if (fileNames.length > 0) {
                 // Loop through the filenames and create an <li> for each
                 fileNames.forEach(fullfileName => {
-                    const listItem = document.createElement('li');
+                    if (fullfileName != folderName) {
+                        const listItem = document.createElement('li');
                     const postHeading = document.createElement('h1');
-                    const fileNameWithExtension = fullfileName.split('/').pop();
-                    const fileName = fileNameWithExtension.replace('.html', '');
-                    postHeading.textContent = fileName;  // Set the filename as the heading
-                    listItem.appendChild(postHeading);
-                    recentPostsList.appendChild(listItem);
-                    
-                    postHeading.addEventListener('click', () => {
-                        window.location.href = `assets/categories/${fullfileName}`;
-                    });
+                    postHeading.textContent = fullfileName;  // Set the filename as the heading
+                        listItem.appendChild(postHeading);
+                        allPostsList.appendChild(listItem);
+                        postHeading.addEventListener('click', () => {
+                            window.location.href = `${fullfileName}.html`;
+                        });
+                    }
                 });
             } else {
                 // Handle the case where no files were returned
@@ -185,21 +129,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 const postHeading = document.createElement('h1');
                 postHeading.textContent = 'No posts available';
                 listItem.appendChild(postHeading);
-                recentPostsList.appendChild(listItem);
-            }
-
-            // Handle the "More" button visibility based on the number of files
-            if (data.length > 15) {
-                loadMoreButton.style.display = 'block';
-                loadMoreButton.addEventListener('click', () => {
-                    window.location.href = `allPosts.html`;
-                });
-            } else {
-                loadMoreButton.style.display = 'none';  // Hide the "More" button if there are 15 or fewer files
+                allPostsList.appendChild(listItem);
             }
         })
         .catch(error => {
             console.error('Error fetching file names:', error);
-            recentPostsList.innerHTML = '<li><h1>Error fetching file names</h1></li>';
+            allPostsList.innerHTML = '<li><h1>Error fetching file names</h1></li>';
         });
 });

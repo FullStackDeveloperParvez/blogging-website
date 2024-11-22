@@ -1,28 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PRIZM - Home</title>
+    <title>All Posts</title>
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/index.css">
     <link rel="stylesheet" href="assets/css/theme.css">
-    <script src="assets/js/script.js" defer></script>
+    <script src="assets/js/allposts.js" defer></script>
 </head>
 <body>
     <header>
         <nav>
-            <a href="./index.html">
+            <a href="../../index.html">
                 <h2 class="logo">PRIZM</h2>
             </a>
             <div class="menu" id="menu">
                 <ul class="list">
-                    <li class = "nav-menu-list"><a href="index.html">Home</a></li>
+                    <li class = "nav-menu-list"><a href="../../index.html">Home</a></li>
                     <li class = "nav-menu-list">
                         <a href="#" id = "categories-btn">Categories</a>
                         <ul id="dropdown-list" class="dropdown-menu"></ul>
                     </li>
-                    <li class = "nav-menu-list"><a href="editor.html">Editor</a></li>
+                    <li class = "nav-menu-list"><a href="assets/pages/editor.html">Editor</a></li>
                 </ul>
             </div>
             <div class="list list-right">
@@ -43,25 +43,9 @@
         </nav>
     </header>
     <main id="home">
-        <section class="top-section">
-            <div class="container">
-                <!-- Main Content -->
-                <div class="main-content">
-                    <div class="content-box" id="file-box-1"><h1></h1></div>
-                    <div class="content-box" id="file-box-2"><h1></h1></div>
-                    <div class="content-box" id="file-box-3"><h1></h1></div>
-                    <div class="content-box" id="file-box-4"><h1></h1></div>
-                </div>
-                <!-- Sidebar -->
-                <div class="sidebar">
-                    <div class="recent-posts">
-                        <h1>Recent Posts</h1>
-                        <ul id="recent-posts-list"></ul>
-                        <button id="load-more-button">More</button>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <div class="all-posts" id="all-posts">
+            <ul id="all-posts-list"></ul>
+        </div>
     </main>
 </body>
 </html>
