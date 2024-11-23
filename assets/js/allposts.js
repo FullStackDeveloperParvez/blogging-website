@@ -116,8 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const postHeading = document.createElement('h1');
                     const fileNameWithExtension = fullfileName.split('/').pop();
                     const fileName = fileNameWithExtension.replace('.html', '');
-                    const folderName = fullfileName.split('/')[0];
-                    if (fileName != folderName) {
+                    if (fileName != 'index') {
                         postHeading.textContent = fileName;  // Set the filename as the heading
                         listItem.appendChild(postHeading);
                         allPostsList.appendChild(listItem);

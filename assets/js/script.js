@@ -96,57 +96,57 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 //Homepage Random posts section
-document.addEventListener('DOMContentLoaded', () => {
-    const mainContentBoxes = document.querySelectorAll('.content-box');
+// document.addEventListener('DOMContentLoaded', () => {
+//     const mainContentBoxes = document.querySelectorAll('.content-box');
 
-    // Fetch filenames from the backend API
-    function fetchFilenames(callback) {
-        fetch('http://localhost:3000/api/categories/files')
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to fetch filenames');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                callback(data);
-            })
-            .catch((error) => {
-                console.error(error);
-                callback([]);
-            });
-    }
+//     // Fetch filenames from the backend API
+//     function fetchFilenames(callback) {
+//         fetch('http://localhost:3000/api/categories/files')
+//             .then((response) => {
+//                 if (!response.ok) {
+//                     throw new Error('Failed to fetch filenames');
+//                 }
+//                 return response.json();
+//             })
+//             .then((data) => {
+//                 callback(data);
+//             })
+//             .catch((error) => {
+//                 console.error(error);
+//                 callback([]);
+//             });
+//     }
 
-    // Display random filenames in the content boxes
-    function displayRandomFiles(filenames) {
-        // Select 4 random filenames
-        const randomFiles = filenames.sort(() => 0.5 - Math.random()).slice(0, 4);
+//     // Display random filenames in the content boxes
+//     function displayRandomFiles(filenames) {
+//         // Select 4 random filenames
+//         const randomFiles = filenames.sort(() => 0.5 - Math.random()).slice(0, 4);
 
-        mainContentBoxes.forEach((box, index) => {
-            if (randomFiles[index]) {
-                const fullPath = randomFiles[index];
-                const fileNameWithExtension = fullPath.split('/').pop();
-                const fileName = fileNameWithExtension.replace('.html', '');
-                const headingElement = box.querySelector('h1');
-                headingElement.textContent = fileName;
+//         mainContentBoxes.forEach((box, index) => {
+//             if (randomFiles[index]) {
+//                 const fullPath = randomFiles[index];
+//                 const fileNameWithExtension = fullPath.split('/').pop();
+//                 const fileName = fileNameWithExtension.replace('.html', '');
+//                 const headingElement = box.querySelector('h1');
+//                 headingElement.textContent = fileName;
 
-                // Set the file path as a click event handler
-                box.addEventListener('click', () => {
-                    window.location.href = `assets/categories/${fullPath}`;
-                });
-            }
-        });
-    }
+//                 // Set the file path as a click event handler
+//                 box.addEventListener('click', () => {
+//                     window.location.href = `assets/categories/${fullPath}`;
+//                 });
+//             }
+//         });
+//     }
 
-    // Initialize
-    fetchFilenames((filenames) => {
-        if (filenames.length > 0) {
-            displayRandomFiles(filenames);
-        } else {
-            console.error('No files found in categories');
-        }
-    });
-});
+//     // Initialize
+//     fetchFilenames((filenames) => {
+//         if (filenames.length > 0) {
+//             displayRandomFiles(filenames);
+//         } else {
+//             console.error('No files found in categories');
+//         }
+//     });
+// });
 
 //Homepage Recent Posts List
 document.addEventListener('DOMContentLoaded', function () {
@@ -171,13 +171,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     const postHeading = document.createElement('h1');
                     const fileNameWithExtension = fullfileName.split('/').pop();
                     const fileName = fileNameWithExtension.replace('.html', '');
-                    postHeading.textContent = fileName;  // Set the filename as the heading
-                    listItem.appendChild(postHeading);
-                    recentPostsList.appendChild(listItem);
-                    
-                    postHeading.addEventListener('click', () => {
-                        window.location.href = `assets/categories/${fullfileName}`;
-                    });
+                    if(fileName != 'index') {
+                        postHeading.textContent = fileName;  // Set the filename as the heading
+                        listItem.appendChild(postHeading);
+                        recentPostsList.appendChild(listItem);
+                        
+                        postHeading.addEventListener('click', () => {
+                            window.location.href = `assets/categories/${fullfileName}`;
+                        });
+                    }
                 });
             } else {
                 // Handle the case where no files were returned

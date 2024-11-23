@@ -1,7 +1,7 @@
 :root {
     --background-color: #F8F9FA;
     --primary-color: #E9ECEF;
-    --headings-background-color-transprent: #343a40e5;
+    --headings-background-color-transprent: #6c757ddc;
     --headings-background-color-opaque: #343a40;
     --home-headings-color: #E9ECEF;
     --text-color: #212529;
@@ -10,7 +10,7 @@
 [data-theme="dark"] {
     --background-color: #212529;
     --primary-color: #343A40;
-    --headings-background-color-transprent: #6C757De5;
+    --headings-background-color-transprent: #343a40e5;
     --headings-background-color-opaque: #6C757D;
     --home-headings-color: #E9ECEF;
     --text-color: #F8F9FA;

@@ -182,27 +182,64 @@ nav .logo {
 
 /* Main Content Section */
 .main-content {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    flex: 2;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
     padding: 10px;
     height: 100%; /* Take full height */
-    width: 80%;
+    width: 70%;
+}
+
+#file-box-1 {
+    background-image: url('../images/Blog.png');
+}
+
+#file-box-2 {
+    background-image: url('../images/News.png');
+}
+
+#file-box-3 {
+    background-image: url('../images/Web-Development.png');
+}
+
+#file-box-4 {
+    background-image: url('../images/Html.png');
+}
+
+#file-box-5 {
+    background-image: url('../images/Css.png');
+}
+
+#file-box-6 {
+    background-image: url('../images/Js.png');
+}
+
+#file-box-7 {
+    background-image: url('../images/Javascript.png');
+}
+
+#file-box-8 {
+    background-image: url('../images/Python.png');
+}
+
+#file-box-9 {
+    background-image: url('../images/Java.png');
 }
 
 .content-box {
     background-color: var(--primary-color);
-    background-image: url('../images/National-Emblem.png');
-    background-size: auto; 
+    background-size: contain; 
     background-repeat: no-repeat;
     background-position: center center;
     display: flex;
-    align-items: center;
+    align-items:center;
     justify-content: center;
     text-align: center;
     position: relative;
     overflow: hidden;
+    max-height: 300px;
+    flex: 0 0 30%;
+    margin: 10px;
 }
 
 .content-box h1 {
@@ -213,9 +250,17 @@ nav .logo {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 30%;
-    text-align: left;
+    height: 100%;
+    text-align: center;
     cursor: pointer;
+    display: flex;
+    align-items:center;
+    justify-content: center;
+}
+
+.content-box h1 a {
+    text-decoration: none;
+    color: var(--home-headings-color);
 }
 
 /* Sidebar Section */
@@ -275,7 +320,8 @@ nav .logo {
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .main-content {
-        grid-template-columns: 1fr; /* Single column layout */
+        flex: 0 0 100%;
+        margin: 10px;
     }
 
     .sidebar {
@@ -289,8 +335,14 @@ nav .logo {
 }
 
 @media screen and (max-width: 480px) {
+    .main-content {
+        flex: 0 0 100%;
+        margin: 5px;
+    }
+
     .recent-posts h1, .content-box h1 {
-        font-size: 18px;
+        font-size: 14px;
+        padding: 8px;
     }
 
     .recent-posts li h1 {
@@ -359,6 +411,7 @@ nav .logo {
 }
 
 .editor-page-name {
+    padding: 10px;
     font-size: 2rem;
     margin-bottom: 20px;
     text-align: center;

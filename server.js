@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const bodyParser = require("body-parser");
 const cors = require('cors'); // Import CORS middleware
+const multer = require("multer");
 
 const app = express();
 const PORT = 3000;
