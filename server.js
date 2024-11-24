@@ -34,59 +34,36 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
 // Endpoint to fetch filenames from subfolders
 app.get('/api/categories/files', (req, res) => {
-    const categoriesPath = path.join(__dirname, 'assets', 'categories');
-    const filesWithDates = [];
+    const dir = path.join(__dirname, 'assets', 'categories');
+    const files = [];
 
-    fs.readdir(categoriesPath, { withFileTypes: true }, (err, folders) => {
-        if (err) {
-            return res.status(500).json({ error: 'Unable to read directory' });
-        }
+    function getAllFiles(directory) {
+        const items = fs.readdirSync(directory);
 
-        let remainingFolders = folders.length;
-
-        if (remainingFolders === 0) {
-            return res.json([]); // If no folders, return an empty array
-        }
-
-        folders.forEach((folder) => {
-            if (folder.isDirectory()) {
-                const folderPath = path.join(categoriesPath, folder.name);
-
-                fs.readdir(folderPath, (err, files) => {
-                    if (!err) {
-                        files.forEach((file) => {
-                            if (file.endsWith('.html')) {
-                                const filePath = path.join(folderPath, file);
-                                const stats = fs.statSync(filePath);
-
-                                filesWithDates.push({
-                                    name: `${folder.name}/${file}`,
-                                    createdAt: stats.birthtimeMs, // File creation time
-                                });
-                            }
-                        });
-                    }
-
-                    remainingFolders--;
-
-                    if (remainingFolders === 0) {
-                        // Sort by creation date and time (descending)
-                        const sortedFiles = filesWithDates.sort((a, b) => {
-                            const timeA = a.createdAt;
-                            const timeB = b.createdAt;
-                            return timeB - timeA; // Descending order
-                        });
-
-                        // Extract filenames only
-                        const sortedFileNames = sortedFiles.map((file) => file.name);
-                        res.json(sortedFileNames);
-                    }
-                });
+        items.forEach(item => {
+            const filePath = path.join(directory, item);
+            const stats = fs.statSync(filePath);
+            console.log(filePath);
+            if (stats.isDirectory()) {
+                // If it's a directory, recursively process it
+                getAllFiles(filePath);
             } else {
-                remainingFolders--;
+                // If it's a file, add it to the list with its last modified time
+                files.push({
+                    name: path.parse(item).name+path.parse(item).ext, // Get only the file name without extension
+                    modifiedTime: stats.mtimeMs // Last modified time in milliseconds
+                });
             }
         });
-    });
+    }
+
+    getAllFiles(dir);
+
+    // Sort files by modified time (descending)
+    files.sort((a, b) => b.modifiedTime - a.modifiedTime);
+
+    // Return sorted filenames
+    return res.json(files.map(file => file.name));
 });
 
 
@@ -203,8 +180,8 @@ app.post("/save-blog", (req, res) => {
         <div class="all-posts" id="all-posts">
             <ul id="all-posts-list"></ul>
         </div>
-        
     </main>
+    <div id="overlay"></div>
 </body>
 </html>
         `;
@@ -266,6 +243,7 @@ app.post("/save-blog", (req, res) => {
         <h1>${heading}</h1>
     <div>${content}</div>
     </main>
+    <div id="overlay"></div>
 </body>
 </html>
 `;
@@ -304,6 +282,55 @@ app.get("/get-html-file-names", (req, res) => {
         res.json(htmlFileNames);
     });
 });
+
+//API to search data
+app.get('/search', (req, res) => {
+    const searchTerm = req.query.q?.toLowerCase();
+    if (!searchTerm) {
+        return res.status(400).json({ error: 'Search term is required' });
+    }
+
+    const dir = path.join(__dirname, 'assets', 'categories');
+    const files = [];
+    function getAllFiles(directory) {
+        const items = fs.readdirSync(directory);
+        items.forEach(item => {
+            const filePath = path.join(directory, item);
+            const stats = fs.statSync(filePath);
+            console.log(filePath);
+            if (stats.isDirectory()) {
+                // If it's a directory, recursively process it
+                getAllFiles(filePath);
+            } else {
+                // If it's a file, add it to the list with its last modified time
+                if(filePath.endsWith('.html')) {
+                    files.push(filePath);
+                }
+            }
+        });
+    }
+    getAllFiles(dir);
+
+    const result = []
+    for(const file of files) {
+        if(!file.endsWith('index.html')) {
+            const content = fs.readFileSync(file, 'utf-8');
+        const lines = content.split('\n');
+        lines.forEach((line) => {
+            if (line.toLowerCase().includes(searchTerm) && !result.some(fn => fn.fileName === file.split('/').pop())) {
+                result.push({
+                    filePath: path.relative(__dirname, file),
+                    fileName: file.split('/').pop()
+                });
+            }
+        });
+        }
+    }
+
+    res.json(result);
+});
+
+
 
 app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);

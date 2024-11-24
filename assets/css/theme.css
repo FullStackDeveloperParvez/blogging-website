@@ -5,6 +5,8 @@
     --headings-background-color-opaque: #343a40;
     --home-headings-color: #E9ECEF;
     --text-color: #212529;
+    --search-modal-color: #212529f5;
+    
 }
 
 [data-theme="dark"] {
@@ -14,6 +16,7 @@
     --headings-background-color-opaque: #6C757D;
     --home-headings-color: #E9ECEF;
     --text-color: #F8F9FA;
+    --search-modal-color: #212529f5;
 }
 
 body {

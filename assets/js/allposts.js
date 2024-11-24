@@ -94,6 +94,89 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+//Search Option
+const searchIcon = document.getElementById('search-icon');
+const overlay = document.getElementById('overlay');
+const closeIcon = document.getElementById('overlay-close');
+
+// Show the overlay and the close icon
+searchIcon.addEventListener('click', () => {
+    overlay.style.display = 'block';
+    closeIcon.style.display = 'block';
+    
+    const overlayContent = document.createElement('div');
+    overlayContent.setAttribute('id', 'overlay-conent');
+
+    const searchHeading = document.createElement('div');
+    searchHeading.setAttribute('id', 'overlay-search-heading');
+    searchHeading.textContent = 'Search Blog';
+    overlayContent.appendChild(searchHeading);
+
+    const searchBox = document.createElement('input');
+    searchBox.setAttribute('type', 'text');
+    searchBox.setAttribute('id', 'overlay-search-textarea');
+    searchBox.setAttribute('placeholder', 'Search for blog...');
+    overlayContent.appendChild(searchBox);
+
+    const searchBtn = document.createElement('button');
+    searchBtn.setAttribute('id', 'overlay-search-btn');
+    searchBtn.setAttribute('onclick', 'searchForDataInBlogs()');
+    searchBtn.textContent = 'Search';
+    overlayContent.appendChild(searchBtn);
+
+    const searchResult = document.createElement('div');
+    searchResult.setAttribute('id', 'overlay-search-result');
+    overlayContent.appendChild(searchResult);
+
+    overlay.appendChild(overlayContent);
+});
+
+// Hide the overlay and the close icon
+closeIcon.addEventListener('click', () => {
+    overlay.style.display = 'none';
+    closeIcon.style.display = 'none';
+    overlay.removeChild(document.getElementById('overlay-conent'));
+});
+
+
+function searchForDataInBlogs() {
+    const searchBtn = document.getElementById("overlay-search-btn");
+    const searchQuery = document.getElementById("overlay-search-textarea").value.trim();
+    const resultContainer = document.getElementById("overlay-search-result");
+    resultContainer.innerHTML = ""; // Clear previous results
+
+    if (!searchQuery) {
+        resultContainer.innerHTML = "<p>Please enter a search term.</p>";
+        return;
+    }
+
+    let numberOfResults = 0;
+
+    fetch(`http://localhost:3000/search?q=${encodeURIComponent(searchQuery)}`)
+	.then((response) => response.json())
+    .then((data) => {
+        if (data.length > 0) {
+            data.forEach((result) => {
+                if(numberOfResults<=10) {
+                    const resultElement = document.createElement("div");
+                resultElement.setAttribute('id', 'overlay-search-result-content');
+                resultElement.innerHTML = `
+                    <a href="${result.filePath}">${result.fileName.split('.')[0]}</a>
+                `;
+                resultContainer.appendChild(resultElement);
+                numberOfResults++;
+                }
+            });
+        } else {
+            resultContainer.innerHTML = '<div id="overlay-search-result-content"> <p>No results found.</p> </div>';
+        }
+    })
+	.catch((error) => {
+		console.error("Error fetching search results:", error);
+		resultContainer.innerHTML = '<div id="overlay-search-result-content"><p>Error searching files. Please try again later.</p></div>';
+	});
+}
+
 //Fetch all blogs
 document.addEventListener('DOMContentLoaded', function () {
     const allPostsList = document.getElementById('all-posts-list');
@@ -112,18 +195,20 @@ document.addEventListener('DOMContentLoaded', function () {
             if (fileNames.length > 0) {
                 // Loop through the filenames and create an <li> for each
                 fileNames.forEach(fullfileName => {
-                    const listItem = document.createElement('li');
-                    const postHeading = document.createElement('h1');
-                    const fileNameWithExtension = fullfileName.split('/').pop();
-                    const fileName = fileNameWithExtension.replace('.html', '');
-                    if (fileName != 'index') {
-                        postHeading.textContent = fileName;  // Set the filename as the heading
-                        listItem.appendChild(postHeading);
-                        allPostsList.appendChild(listItem);
-                        postHeading.addEventListener('click', () => {
-                            window.location.href = `assets/categories/${fullfileName}`;
-                        });
+                    if(fullfileName.split('.')[1] == 'html') {
+                        const listItem = document.createElement('li');
+                        const postHeading = document.createElement('h1');
+                        const fileName = fullfileName.replace('.html', '');
+                        if(fileName != 'index') {
+                            postHeading.textContent = fileName;  // Set the filename as the heading
+                            listItem.appendChild(postHeading);
+                            allPostsList.appendChild(listItem);   
+                            postHeading.addEventListener('click', () => {
+                                window.location.href = `assets/categories/${fullfileName}`;
+                            });
+                        }
                     }
+
                 });
             } else {
                 // Handle the case where no files were returned

@@ -173,10 +173,21 @@ nav .logo {
     }
 }
 
+#home {
+    min-height: 100%;
+}
+
+.top-section {
+    min-height: 100%;
+}
+
 .container {
     display: flex;
     flex-wrap: wrap;
-    height: 94vh; /* Full screen height */
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 100%;
+    min-height: 95vh; /* Full screen height */
     width: 100%;
 }
 
@@ -185,8 +196,12 @@ nav .logo {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    gap: 20px 0px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    flex-basis: 50%;
     padding: 10px;
-    height: 100%; /* Take full height */
+    min-height: 100%; /* Take full height */
     width: 70%;
 }
 
@@ -237,9 +252,7 @@ nav .logo {
     text-align: center;
     position: relative;
     overflow: hidden;
-    max-height: 300px;
     flex: 0 0 30%;
-    margin: 10px;
 }
 
 .content-box h1 {
@@ -317,11 +330,117 @@ nav .logo {
     font-size: 16px;
 }
 
+#overlay {
+    position: fixed; /* Covers the entire screen */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--search-modal-color); /* Semi-transparent black background */
+    z-index: 1000; /* Ensures it appears on top of other elements */
+    display: none; /* Initially hidden */
+}
+
+#overlay-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 24px; /* Adjust icon size */
+    color: var(--home-headings-color);
+    cursor: pointer;
+    display: none; /* Hidden by default */
+    z-index: 1001; /* Higher than overlay to be clickable */
+}
+
+#overlay-conent {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    min-height: 50%;
+}
+
+#overlay-search-heading {
+    color: var(--home-headings-color);
+    padding: 20px 20px;
+    position: relative;
+    width: 50%;
+    text-align: center;
+    font-size: xx-large;
+}
+
+#overlay-search-textarea {
+    padding: 20px 20px;
+    width: 60%;
+    border-radius: 200px;
+    font-size: 16px;
+}
+
+#overlay-search-btn {
+    background-color: var(--headings-background-color-opaque);
+    color: var(--home-headings-color);
+    border: none;
+    padding: 10px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#overlay-search-result-content {
+    background-color: var(--home-headings-color);
+    min-width: 75vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 100px;
+    border-bottom: 5px solid var(--search-modal-color);
+}
+
+#overlay-search-result-content p {
+    color: var(--search-modal-color);
+    cursor: pointer;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#overlay-search-result-content a {
+    color: var(--search-modal-color);
+    cursor: pointer;
+    font-size: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    width: 100%;
+}
+
+#overlay-search-result-content:hover {
+    background-color: var(--search-modal-color);
+}
+
+#overlay-search-result-content a:hover {
+    color: var(--home-headings-color);
+}
+
 /* Responsive Design */
 @media screen and (max-width: 768px) {
     .main-content {
-        flex: 0 0 100%;
+        flex: 1 1 100%;
         margin: 10px;
+    }
+
+    .content-box {
+        font-size: 12px;
+        flex: 1 0 100%;
+        min-height: 100px;
     }
 
     .sidebar {
@@ -336,8 +455,14 @@ nav .logo {
 
 @media screen and (max-width: 480px) {
     .main-content {
-        flex: 0 0 100%;
+        flex: 1 1 100%;
         margin: 5px;
+    }
+
+    .content-box {
+        font-size: 12px;
+        flex: 1 0 100%;
+        min-height: 100px;
     }
 
     .recent-posts h1, .content-box h1 {
